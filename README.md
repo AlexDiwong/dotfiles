@@ -8,3 +8,5 @@ Install with
 ```sh
 $ git clone git@github.com:AlexDiwong/dotfiles.git ~/.config/nvim
 ```
+
+Everything should install setup automatically on startup
