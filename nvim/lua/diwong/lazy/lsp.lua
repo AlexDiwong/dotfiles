@@ -37,7 +37,8 @@ return {
                     'pyright',
                     'html',
                     'jsonls',
-                    'yamlls'
+                    'yamlls',
+                    'kotlin_language_server'
                 },
                 handlers = {
                     function(server_name)
@@ -58,6 +59,21 @@ return {
                             }
                         }
                     end,
+                    ["kotlin_language_server"] = function()
+                        local lspconfig = require("lspconfig")
+                        lspconfig.kotlin_language_server.setup {
+                            settings = {
+                                kotlin = {
+                                    compiler = {
+                                        jvm = {
+                                            target = "17"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    end
+
                 }
             })
 
