@@ -6,10 +6,10 @@ neovim setup in lua. Uses Lazy package manager.
 Install with
 
 ```sh
-git clone git@github.com:AlexDiwong/dotfiles.git ~/.config/nvim
+cp -r nvim/ ~/.config/
 ```
 
-Everything should install setup automatically on startup
+Everything should install setup automatically on startup. Comment out any lsp's you don't want or do not have installed.
 
 
 ## Zsh
