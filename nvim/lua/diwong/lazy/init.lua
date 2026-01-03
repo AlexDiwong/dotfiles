@@ -12,6 +12,12 @@ return {
         end
     },
     {
+        'tpope/vim-rhubarb',
+        dependencies = {
+            'tpope/vim-fugitive'
+        }
+    },
+    {
         'shumphrey/fugitive-gitlab.vim',
         dependencies = {
             'tpope/vim-fugitive'
