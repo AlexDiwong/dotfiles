@@ -60,11 +60,10 @@ ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%}"
 ZSH_THEME_GIT_PROMPT_DIRTY="%{$fg[red]%}"
 ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg[green]%}"
 
-alias please='sudo $(fc -ln -1)'
-
+# FZF Setup
 export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'
-
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+eval "$(fzf --zsh)"
 
 # Add direnv
 eval "$(direnv hook zsh)"
@@ -88,6 +87,9 @@ export PATH=$PATH:$GOPATH/bin
 
 # Python load user packages
 export PATH=$PATH:$HOME/.local/bin
+
+#Gitlab utilites
+alias gitlab="open https://gitlab.\$(git config remote.origin.url | cut -f2 -d. | sed 's/:/\//')"
 
 #Load openjdk
 export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"

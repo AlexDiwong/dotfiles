@@ -6,10 +6,12 @@ local augroup = vim.api.nvim_create_augroup
 local DiwongGroup = augroup('Diwong', {})
 local autocmd = vim.api.nvim_create_autocmd
 
+require('codex').status() -- drop in to your lualine sectionsv
 
 autocmd('LspAttach', {
     group = DiwongGroup,
-    callback = function(ev)
+    callback = function(e)
+        local opts = { buffer = e.buf }
         vim.keymap.set("n", "gD", function() vim.lsp.buf.declaration() end, opts)
         vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end, opts)
         vim.keymap.set("n", "K", function() vim.lsp.buf.hover() end, opts)
@@ -21,6 +23,11 @@ autocmd('LspAttach', {
         vim.keymap.set("n", "<leader>vrr", function() vim.lsp.buf.references() end, opts)
         vim.keymap.set("n", "<leader>vrn", function() vim.lsp.buf.rename() end, opts)
         vim.keymap.set("i", "<C-h>", function() vim.lsp.buf.signature_help() end, opts)
-
     end,
+})
+
+vim.filetype.add({
+  pattern = {
+    ['%.gitlab%-ci%.ya?ml'] = 'yaml.gitlab',
+  },
 })

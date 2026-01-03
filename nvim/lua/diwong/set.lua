@@ -30,3 +30,5 @@ vim.opt.colorcolumn = "80"
 
 vim.opt.title = true
 vim.opt.titlestring = "%t"
+
+vim.g.netrw_keepdir=0

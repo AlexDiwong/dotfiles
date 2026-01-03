@@ -28,20 +28,26 @@ return {
             require('mason-lspconfig').setup({
                 ensure_installed = {
                     -- Replace these with whatever servers you want to install
-                    'tsserver',
+                    'ts_ls',
                     'eslint',
                     'lua_ls',
-                    'rust_analyzer',
-                    'golangci_lint_ls',
-                    'gopls',
                     'pyright',
+                    'ruff',
                     'html',
                     'jsonls',
                     'yamlls',
-                    'kotlin_language_server'
+                    'kotlin_lsp',
+                    'gopls',
+                    'gitlab_ci_ls',
+                    'sqls',
+                    'lemminx',
+                    'terraformls'
                 },
                 handlers = {
                     function(server_name)
+                        if server_name == 'tsserver' then
+                            server_name = 'ts_ls'
+                        end
                         require('lspconfig')[server_name].setup {
                             capabilities = capabilities
                         }
@@ -53,15 +59,34 @@ return {
                             settings = {
                                 Lua = {
                                     diagnostics = {
-                                        globals = { "vim" }
+                                        globals = { 'vim' }
                                     }
                                 }
                             }
                         }
                     end,
-                    ["kotlin_language_server"] = function()
+                    ["yamlls"] = function()
                         local lspconfig = require("lspconfig")
-                        lspconfig.kotlin_language_server.setup {
+                        lspconfig.yamlls.setup {
+                            on_attach = function(client, _)
+                                -- Disabled by default due to vscode not working properly...
+                                client.server_capabilities.documentFormattingProvider = true
+                            end,
+                            settings = {
+                                yaml = {
+                                    format = {
+                                        enable = true
+                                    },
+                                    schemaStore = {
+                                        enable = true
+                                    }
+                                }
+                            }
+                        }
+                    end,
+                    ["kotlin_lsp"] = function()
+                        local lspconfig = require("lspconfig")
+                        lspconfig.kotlin_lsp.setup {
                             settings = {
                                 kotlin = {
                                     compiler = {
@@ -73,7 +98,6 @@ return {
                             }
                         }
                     end
-
                 }
             })
 
@@ -104,22 +128,31 @@ return {
                     focusable = false,
                     style = 'minimal',
                     border = 'rounded',
-                    source = 'alwayas',
+                    source = 'always',
                     header = '',
                     prefix = '',
                 },
+                signs = {
+                    text = {
+                        [vim.diagnostic.severity.ERROR] = "✘",
+                        [vim.diagnostic.severity.WARN] = "▲",
+                        [vim.diagnostic.severity.HINT] = "⚑",
+                        [vim.diagnostic.severity.INFO] = "»"
+                    },
+                    linehl = {
+                        [vim.diagnostic.severity.ERROR] = "DiagnosticSignError",
+                        [vim.diagnostic.severity.WARN] = "DiagnosticSignWarn",
+                        [vim.diagnostic.severity.HINT] = "DiagnosticSignHint",
+                        [vim.diagnostic.severity.INFO] = "DiagnosticSignInfo"
+                    },
+                    numhl = {
+                        [vim.diagnostic.severity.ERROR] = "",
+                        [vim.diagnostic.severity.WARN] = "",
+                        [vim.diagnostic.severity.HINT] = "",
+                        [vim.diagnostic.severity.INFO] = ""
+                    }
+                }
             })
-
-            local signs = {
-                { name = "DiagnosticSignError", text = "✘" },
-                { name = "DiagnosticSignWarn", text = "▲" },
-                { name = "DiagnosticSignHint", text = "⚑" },
-                { name = "DiagnosticSignInfo", text = "»" },
-            }
-
-            for _, sign in ipairs(signs) do
-                vim.fn.sign_define(sign.name, { texthl = sign.name, text = sign.text, numhl = "" })
-            end
         end
     }
 }
